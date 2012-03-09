@@ -2775,7 +2775,10 @@ class HTMLForm:
     def __getitem__(self, name):
         return self.find_control(name).value
     def __contains__(self, name):
-        return bool(self.find_control(name))
+        try:
+            return bool(self.find_control(name))
+        except ControlNotFoundError: #I don't know how to do better
+            return False
     def __setitem__(self, name, value):
         control = self.find_control(name)
         try:

@@ -271,6 +271,18 @@ class ParseTests(unittest.TestCase):
             self.assert_(issubclass(mechanize.ParseError,
                                     sgmllib.SGMLParseError))
 
+    def test_in(self):
+        f = StringIO(
+"""<form action="abc">
+<input type="text" name="field1">
+</form>
+""")
+        base_uri = "http://localhost/"
+        forms = mechanize.ParseFile(f, base_uri, backwards_compat=False)
+        form = forms[0]
+        self.assertIn('field1', form);
+        self.assertNotIn('field2', form);
+
     def test_unknown_control(self):
         f = StringIO(
 """<form action="abc">
