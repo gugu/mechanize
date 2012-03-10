@@ -469,6 +469,7 @@ Rhubarb.
 <select name="foo">
  <option>Hello testers &amp; &blah; users!</option>
  <option></option><option></option>
+ <option>Hello</option>
 </select>
 
 </form>
@@ -489,6 +490,7 @@ Rhubarb.
         self.assertEqual(opt["value"], "Hello testers & &blah; users!")
         self.assertEqual(opt["label"], "Hello testers & &blah; users!")
         self.assertEqual(opt["contents"], "Hello testers & &blah; users!")
+        self.assertEqual(entity_ctl.get(label="Hello").attrs['contents'], 'Hello')
 
     def testButton(self):
         file = StringIO(
@@ -2200,8 +2202,6 @@ class ControlTests(unittest.TestCase):
         c1.set_value_by_label(['Last Option'])  # by second label
         self.assertEqual(c1.get_value_by_label(), ['Third Option'])
         self.assertEqual(c1.value, ['another_value'])
-        c1.set_value_by_label(['irst'])  # by substring
-        self.assertEqual(c1.get_value_by_label(), ['First Option'])
 
 
 class FormTests(unittest.TestCase):
@@ -2678,7 +2678,7 @@ class FormTests(unittest.TestCase):
                     [item.id for item in c.items if item.selected],
                     ["1", "2", None])
                 # disabled items NOT part of 'value by label'
-                c.get(label="Challah").disabled = True
+                c.get(label="Loaf of Challah").disabled = True
                 self.assertEqual(
                     c.get_value_by_label(),
                     ["Loaf of Bread", "Loaf of Bread"])
@@ -2817,7 +2817,7 @@ class FormTests(unittest.TestCase):
                          "Submit")
         self.assertEqual(
             form.find_control(label="Country").get(
-                label="Britain").name, "EU: Great Britain")
+                label="Great Britain").name, "EU: Great Britain")
         self.assertEqual(
             form.find_control(label="Origin").get(
                 label="GB").name, "EU: Great Britain")
@@ -2844,9 +2844,6 @@ class FormTests(unittest.TestCase):
         # Errors may be raised.  This is generally a preferred approach, but is
         # not backwards compatible.
         form.backwards_compat = False
-        self.assertRaises(mechanize.AmbiguityError, c.get, label="Loaf")
-        self.assertRaises(
-            mechanize.AmbiguityError, c.set_value_by_label, ["Loaf"])
         # If items have the same name (value), set_value_by_label will
         # be happy (since it is just setting the value anyway).
         c.set_value_by_label(["Loaf of Bread"])
@@ -2871,9 +2868,6 @@ class FormTests(unittest.TestCase):
         self.assertEqual(
             [i.selected for i in c.get_items(label="Loaf of Challah")],
             [True])
-        self.assertEqual(
-            [i.name for i in c.get_items(label="Loaf")],
-            ["bread", "bread", "bread", "challah"])
         self.assertEqual(
             [i.get_labels()[0].text for i in c.get_items("bread")],
             ["Loaf of Bread", "Loaf of Bread", "Loaf of Bread"])

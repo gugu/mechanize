@@ -1712,8 +1712,7 @@ class ListControl(Control):
                 continue
             if label is not None:
                 for l in o.get_labels():
-                    if ((compat and l.text == label) or
-                        (not compat and l.text.find(label) > -1)):
+                    if l.text == label:
                         break
                 else:
                     continue
