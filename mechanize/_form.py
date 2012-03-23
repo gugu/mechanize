@@ -3204,7 +3204,7 @@ class HTMLForm:
 
     def _pairs(self):
         """Return sequence of (key, value) pairs suitable for urlencoding."""
-        return [(k, v) for (i, k, v, c_i) in self._pairs_and_controls()]
+        return [(k, v.encode('utf-8') if isinstance(v, unicode) else v) for (i, k, v, c_i) in self._pairs_and_controls()]
 
 
     def _pairs_and_controls(self):
