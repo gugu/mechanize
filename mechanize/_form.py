@@ -1258,8 +1258,8 @@ class ScalarControl(Control):
         if value is None: value = u"<None>"
 
         infos = []
-        if self.disabled: infos.append("disabled")
-        if self.readonly: infos.append("readonly")
+        if self.disabled: infos.append(u"disabled")
+        if self.readonly: infos.append(u"readonly")
         info = u", ".join(infos)
         if info: info = u" (%s)" % info
 
@@ -2810,7 +2810,7 @@ class HTMLForm:
             self.method, self.action, self.enctype)
         rep = [header]
         for control in self.controls:
-            rep.append(u"  %s" % str(control))
+            rep.append(u"  %s" % unicode(control))
         return u"<%s>" % u"\n".join(rep)
 
 #---------------------------------------------------
