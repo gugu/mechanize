@@ -1251,6 +1251,20 @@ class ScalarControl(Control):
 
         return "<%s(%s=%s)%s>" % (self.__class__.__name__, name, value, info)
 
+    def __unicode__(self):
+        name = self.name
+        value = self.value
+        if name is None: name = u"<None>"
+        if value is None: value = u"<None>"
+
+        infos = []
+        if self.disabled: infos.append("disabled")
+        if self.readonly: infos.append("readonly")
+        info = u", ".join(infos)
+        if info: info = u" (%s)" % info
+
+        return u"<%s(%s=%s)%s>" % (self.__class__.__name__, name, value, info)
+
 
 #---------------------------------------------------
 class TextControl(ScalarControl):
