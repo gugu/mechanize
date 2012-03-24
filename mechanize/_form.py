@@ -1370,6 +1370,28 @@ class FileControl(ScalarControl):
                 fh2.write(file_object.read())
             mw2.lastpart()
 
+    def __unicode__(self):
+        name = self.name
+        if name is None: name = u"<None>"
+
+        if not self._upload_data:
+            value = u"<No files added>"
+        else:
+            value = []
+            for file, ctype, filename in self._upload_data:
+                if filename is None:
+                    value.append(u"<Unnamed file>")
+                else:
+                    value.append(filename)
+            value = u", ".join(value)
+
+        info = []
+        if self.disabled: info.append(u"disabled")
+        if self.readonly: info.append(u"readonly")
+        info = u", ".join(info)
+        if info: info = u" (%s)" % info
+
+        return u"<%s(%s=%s)%s>" % (self.__class__.__name__, name, value, info)
     def __str__(self):
         name = self.name
         if name is None: name = "<None>"
