@@ -2767,6 +2767,15 @@ class HTMLForm:
         for control in self.controls:
             rep.append("  %s" % str(control))
         return "<%s>" % "\n".join(rep)
+    
+    def __unicode__(self):
+        header = u"%s%s %s %s" % (
+            (self.name and self.name+" " or ""),
+            self.method, self.action, self.enctype)
+        rep = [header]
+        for control in self.controls:
+            rep.append(u"  %s" % str(control))
+        return u"<%s>" % u"\n".join(rep)
 
 #---------------------------------------------------
 # Form-filling methods.
